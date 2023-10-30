@@ -5,6 +5,8 @@
 !hypr/*
 !waybar
 !waybar/*
+!dunst
+!dunst/*
 !Thunar
 !Thunar/*
 !xfce4
