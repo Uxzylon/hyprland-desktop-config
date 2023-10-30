@@ -24,6 +24,8 @@
         "network",
         //"bluetooth",
         "custom/updater",
+        "custom/tools",
+        "custom/clipboard",
         "custom/separator#line",
         "cpu",
         "temperature", 
@@ -368,6 +370,18 @@
         "tooltip": false,
         //"on-click": "sh -c '(sleep 0.5s; wlogout --protocol layer-shell)' & disown",
         "on-click": "$HOME/.config/hypr/scripts/power.sh"
+    },
+
+    "custom/clipboard": {
+        "format": "📋 ",
+        "tooltip": false,
+        "on-click": "$HOME/.config/hypr/scripts/clipboard.sh"
+    },
+
+    "custom/tools": {
+        "format": " ",
+        "tooltip": false,
+        "on-click": "$HOME/.config/hypr/scripts/tools.sh"
     },
     
     "custom/updater":{
