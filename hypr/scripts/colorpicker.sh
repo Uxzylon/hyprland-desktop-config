@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # WOFI STYLES
 CONFIG="$HOME/.config/wofi/WofiBig/config"
@@ -17,19 +17,24 @@ wofi_command="wofi --show dmenu \
 			--hide-scroll --no-actions \
 			--matching=fuzzy"
 			
-entries="📋 Clipboard\n😉 Emoji\n🖌 ColorPicker"
+entries=$(echo -e "cmyk\nhex\nrgb\nhsl\nhsv" | $wofi_command -i --dmenu | awk '{print tolower($1)}')
 
-choice=$(echo -e "$entries" | $wofi_command -i --dmenu | awk '{print $2}')
+sleep 0.5
 
-case $choice in
-    Clipboard)
-        exec $HOME/.config/hypr/scripts/clipboard.sh
+case $entries in 
+    cmyk)
+        hyprpicker -f cmyk -a
         ;;
-    Emoji)
-        exec $HOME/.config/hypr/scripts/emoji.sh
+    hex)
+        hyprpicker -f hex -a
         ;;
-    ColorPicker)
-        exec $HOME/.config/hypr/scripts/colorpicker.sh
+    rgb)
+        hyprpicker -f rgb -a
+        ;;
+    hsl)
+        hyprpicker -f hsl -a
+        ;;
+    hsv)
+        hyprpicker -f hsv -a
         ;;
 esac
-
