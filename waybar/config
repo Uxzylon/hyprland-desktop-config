@@ -24,6 +24,7 @@
         "network",
         //"bluetooth",
         "custom/updater",
+        "custom/rotate",
         "custom/tools",
         "custom/clipboard",
         "custom/separator#line",
@@ -374,15 +375,17 @@
     },
 
     "custom/clipboard": {
-        "format": "📋 ",
+        "format": "📋",
         "tooltip": false,
-        "on-click": "$HOME/.config/hypr/scripts/clipboard.sh"
+        "on-click": "$HOME/.config/hypr/scripts/clipboard.sh",
+        "min-length": 4
     },
 
     "custom/tools": {
-        "format": " ",
+        "format": "",
         "tooltip": false,
-        "on-click": "$HOME/.config/hypr/scripts/tools.sh"
+        "on-click": "$HOME/.config/hypr/scripts/tools.sh",
+        "min-length": 4
     },
     
     "custom/updater":{
@@ -403,6 +406,13 @@
         "exec": "~/.config/hypr/scripts/weather.sh",
         "exec-if": "ping wttr.in -c1",
         "tooltip" : true
+    },
+
+    "custom/rotate": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "~/.config/hypr/scripts/rotate.sh",
+        "min-length": 4
     },
     
     
