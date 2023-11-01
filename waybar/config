@@ -409,7 +409,7 @@
     },
 
     "custom/rotate": {
-        "format": "",
+        "format": "",
         "tooltip": false,
         "on-click": "~/.config/hypr/scripts/rotate.sh",
         "min-length": 4
