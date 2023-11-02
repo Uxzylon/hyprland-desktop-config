@@ -5,7 +5,7 @@ mode=drun,run
 run-always_parse_args=true
 show=drun
 prompt=Apps
-#normal_window=true
+normal_window=true
 layer=overlay
 term=foot
 columns=1
@@ -35,10 +35,11 @@ insensitive=false
 
 ## Other
 hide_scroll=false
-no_actions=true
+no_actions=false
 sort_order=default
 gtk_dark=true
 filter_rate=100
+single_click=true
 
 ## Keys
 key_expand=Tab

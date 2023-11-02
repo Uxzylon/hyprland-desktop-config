@@ -5,6 +5,11 @@ CONFIG="$HOME/.config/wofi/WofiBig/config"
 STYLE="$HOME/.config/wofi/style.css"
 COLORS="$HOME/.config/wofi/colors"
 
+if [[ $(pidof wofi) ]]; then
+    pkill wofi
+    exit
+fi
+
 # Wofi window config (in %)
 WOFI_WIDTH=5
 WOFI_HEIGHT=23
