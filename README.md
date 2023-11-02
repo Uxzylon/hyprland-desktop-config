@@ -24,3 +24,9 @@ sudo systemctl enable bluetooth.service
 ```bash
 yay -S thunar thunar-volman tumbler thunar-archive-plugin
 ```
+
+#### Terminal apps Wofi Fix
+    
+```bash
+sudo ln -s /usr/bin/foot /usr/bin/gnome-terminal
+```
