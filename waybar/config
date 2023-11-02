@@ -24,6 +24,7 @@
         "network",
         //"bluetooth",
         "custom/updater",
+        "custom/tablet-mode",
         "custom/rotate",
         "custom/tools",
         "custom/clipboard",
@@ -313,7 +314,7 @@
     "wlr/taskbar": {
         "format": "{icon}",
         "icon-size": 16,
-        "all-outputs": false,
+        "all-outputs": true,
         "tooltip-format": "{name} | {title}",
         "on-click": "activate",
         "on-click-middle": "close",
@@ -412,6 +413,13 @@
         "format": "",
         "tooltip": false,
         "on-click": "~/.config/hypr/scripts/rotate.sh",
+        "min-length": 4
+    },
+
+    "custom/tablet-mode": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "~/.config/hypr/scripts/tablet.sh",
         "min-length": 4
     },
     
