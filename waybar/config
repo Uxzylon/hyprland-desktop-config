@@ -39,7 +39,8 @@
         //"keyboard-state",
         "pulseaudio",
         //"wireplumber", 
-        "pulseaudio#microphone", 
+        "pulseaudio#microphone",
+        //"custom/audio_idle_inhibitor",
         //"custom/cycle_wall",
         "custom/separator#line",
         "custom/weather",
@@ -423,7 +424,21 @@
         "on-click": "~/.config/hypr/scripts/tablet.sh",
         "min-length": 4
     },
-    
+
+    "custom/audio_idle_inhibitor": {
+		"format": "{icon}",
+		"exec": "sway-audio-idle-inhibit --dry-print-both-waybar",
+		"exec-if": "which sway-audio-idle-inhibit",
+		"return-type": "json",
+        "tooltip": false,
+        "min-length": 4,
+		"format-icons": {
+			"output": "",
+			"input": "",
+			"output-input": "  ",
+			"none": ""
+		}
+	},
     
     // Separators
     "custom/separator#dot": {
