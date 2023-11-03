@@ -30,3 +30,9 @@ yay -S thunar thunar-volman tumbler thunar-archive-plugin
 ```bash
 sudo ln -s /usr/bin/foot /usr/bin/gnome-terminal
 ```
+
+#### KDE Connect
+
+```bash
+yay -S kdeconnect
+```
