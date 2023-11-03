@@ -9,7 +9,7 @@ This repository contains the configuration files for my desktop environment.
 #### Requirements
 
 ```bash
-yay -S adobe-source-code-pro-fonts brightnessctl btop cava cliphist dunst ffmpegthumbs foot gnome-system-monitor grim gvfs gvfs-mtp hyprland hyprpicker-git jq mousepad mpv network-manager-applet noto-fonts-emoji nvtop nwg-look-bin otf-font-awesome otf-font-awesome-4 pacman-contrib pamixer pavucontrol pipewire-alsa playerctl polkit-kde-agent python-requests qt5ct slurp swappy swaybg swayidle swaylock-effects swww ttf-droid ttf-fira-code ttf-jetbrains-mono ttf-jetbrains-mono-nerd viewnior vim waybar wget wl-clipboard wlsunset wofi xdg-user-dirs
+yay -S adobe-source-code-pro-fonts brightnessctl btop cava cliphist dunst ffmpegthumbs foot gnome-keyring gnome-system-monitor grim gvfs gvfs-mtp hyprland hyprpicker-git jq mousepad mpv network-manager-applet noto-fonts-emoji nvtop nwg-look-bin otf-font-awesome otf-font-awesome-4 pacman-contrib pamixer pavucontrol pipewire-alsa playerctl polkit-kde-agent python-requests qt5ct slurp swappy swaybg swayidle swaylock-effects swww ttf-droid ttf-fira-code ttf-jetbrains-mono ttf-jetbrains-mono-nerd viewnior vim waybar wget wl-clipboard wlsunset wofi xdg-user-dirs
 ```
 
 #### Bluetooth
