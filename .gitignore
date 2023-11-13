@@ -4,6 +4,7 @@
 !hypr
 !hypr/**
 hypr/monitors.conf
+hypr/env.conf
 !waybar
 !waybar/**
 !dunst
