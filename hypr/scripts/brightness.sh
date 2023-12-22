@@ -5,7 +5,7 @@ notification_timeout=1000
 
 # Get brightness
 get_backlight() {
-	echo $(brightnessctl -m | cut -d, -f4)
+	echo $(LC_NUMERIC=C printf "%.0f\n" "$(echo "$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness | cut -d ' ' -f2) * 100" | bc -l)")
 }
 
 # Get icons
@@ -29,21 +29,16 @@ notify_user() {
 	notify-send -h string:x-dunst-stack-tag:brightness_notif -h int:value:$current -u low -i "$icon" "Brightness : $current%"
 }
 
-# Change brightness
-change_backlight() {
-	brightnessctl set "$1" && get_icon && notify_user
-}
-
 # Execute accordingly
 case "$1" in
 	"--get")
 		get_backlight
 		;;
 	"--inc")
-		change_backlight "+10%"
+		busctl --user call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d 0.05 && get_icon && notify_user
 		;;
 	"--dec")
-		change_backlight "10%-"
+		busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.05 && get_icon && notify_user
 		;;
 	*)
 		get_backlight

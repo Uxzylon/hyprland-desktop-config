@@ -35,7 +35,9 @@
         "disk",
         "custom/separator#line",
         "battery",  
-        "backlight",
+        //"backlight",
+        "custom/wl-gammarelay-temperature",
+        "custom/wl-gammarelay-brightness",
         //"keyboard-state",
         "pulseaudio",
         //"wireplumber", 
@@ -327,7 +329,21 @@
             "wofi"  
         ]
     },
-        
+
+    "custom/wl-gammarelay-temperature": {
+        "format": "{} ",
+        "exec": "wl-gammarelay-rs watch {t}",
+        "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100",
+        "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100"
+    },
+
+    "custom/wl-gammarelay-brightness": {
+        "format": "{}% ",
+        "exec": "wl-gammarelay-rs watch {bp}",
+        "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
+        "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
+    },
+
     "custom/cycle_wall":{
         "format":" ",
         "on-click": "~/.config/hypr/scripts/WallpaperSelect.sh",

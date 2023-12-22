@@ -24,7 +24,7 @@ case $entries in
         systemctl $entries
         ;;
     lock)
-        sleep 0.5s; swaylock --config $HOME/.config/swaylock/config & disown
+        sleep 0.5s; swaylock & disown
         ;;
     logout)
         hyprctl dispatch exit 0
