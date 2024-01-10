@@ -10,7 +10,7 @@ WIDTH=40
 HEIGHT=40
 
 sed '1,/^### DATA ###$/d' $0 | 
-wofi --show dmenu -i --conf ${CONFIG} --style ${STYLE} --color ${COLORS} --width=$WIDTH% --height=$HEIGHT% |
+wofi --show dmenu -i --prompt choose... --conf ${CONFIG} --style ${STYLE} --color ${COLORS} --width=$WIDTH% --height=$HEIGHT% |
 cut -d ' ' -f 1 | tr -d '\n' | wl-copy
 
 exit
