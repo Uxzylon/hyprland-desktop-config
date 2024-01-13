@@ -7,6 +7,7 @@ for _prs in "${_ps[@]}"; do
 	fi
 done
 ags -b hypr -q
+ags quit
 
 hyprctl reload
 #dunst -conf $HOME/.config/dunst/dunstrc &

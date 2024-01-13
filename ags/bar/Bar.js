@@ -7,7 +7,6 @@ import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
-import { applauncher } from '../applauncher/AppLauncher.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
@@ -15,7 +14,7 @@ import { applauncher } from '../applauncher/AppLauncher.js';
 
 // make a button that can open applauncher
 const AppLauncherButton = () => Widget.Button({
-    on_clicked: () => applauncher.visible = !applauncher.visible,
+    on_clicked: () => App.toggleWindow('applauncher'),
     child: Widget.Icon({
         icon: 'view-grid-symbolic',
         size: 24,
