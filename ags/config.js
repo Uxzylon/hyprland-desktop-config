@@ -1,17 +1,31 @@
 import App from 'resource:///com/github/Aylur/ags/app.js';
-const expectedVersion = '1.5.1';
-let config = {};
+import Gdk from 'gi://Gdk';
+import { monitorFile } from 'resource:///com/github/Aylur/ags/utils.js';
+import Bar from './bar/Bar.js';
 
-if (pkg.version === expectedVersion) {
-    config = (await import('./js/main.js')).default;
-}
-else {
-    print('your ags version is ' + pkg.version);
-    // print('my config uses the git branch which is ' + expectedVersion);
-    // print('update ags to the current git version');
-    // FIXME: remove this line after merging #153
-    print('my config uses the feat/widgets-subclass-rewrite branch');
-    App.connect('config-parsed', app => app.Quit());
+monitorFile(
+    `${App.configDir}/style.css`,
+    function() {
+        App.resetCss();
+        App.applyCss(`${App.configDir}/style.css`);
+    },
+);
+
+export function range(length, start = 1) {
+    return Array.from({ length }, (_, i) => i + start);
 }
 
-export default config;
+export function forMonitors(widget) {
+    const n = Gdk.Display.get_default().get_n_monitors();
+    return range(n, 0).map(widget);
+}
+
+const windows = () => [
+    forMonitors(Bar),
+];
+
+// exporting the config so ags can manage the windows
+export default {
+    style: App.configDir + '/style.css',
+    windows: windows(),
+};
