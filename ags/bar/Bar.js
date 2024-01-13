@@ -1,3 +1,4 @@
+import App from 'resource:///com/github/Aylur/ags/app.js';
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
 import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
@@ -5,11 +6,21 @@ import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import { exec, execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
+import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
+import { applauncher } from '../applauncher/AppLauncher.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
 // then you can simply instantiate one by calling it
+
+// make a button that can open applauncher
+const AppLauncherButton = () => Widget.Button({
+    on_clicked: () => applauncher.visible = !applauncher.visible,
+    child: Widget.Icon({
+        icon: 'view-grid-symbolic',
+        size: 24,
+    }),
+});
 
 const Workspaces = () => Widget.Box({
     class_name: 'workspaces',
@@ -65,7 +76,7 @@ const Media = () => Widget.Button({
             const { track_artists, track_title } = Mpris.players[0];
             self.label = `${track_artists.join(', ')} - ${track_title}`;
         } else {
-            self.label = 'Nothing is playing';
+            self.label = '';
         }
     }, 'player-changed'),
 });
@@ -122,10 +133,11 @@ const BatteryLabel = () => Widget.Box({
 
 const SysTray = () => Widget.Box({
     children: SystemTray.bind('items').transform(items => {
-        return items.map(item => Widget.Button({
+        return items.map(
+            item => Widget.Button({
             child: Widget.Icon({ binds: [['icon', item, 'icon']] }),
-            on_primary_click: (_, event) => item.activate(event),
-            on_secondary_click: (_, event) => item.openMenu(event),
+            on_primary_click: (_, event) => item.openMenu(event),
+            on_secondary_click: (_, event) => item.activate(event),
             binds: [['tooltip-markup', item, 'tooltip-markup']],
         }));
     }),
@@ -135,6 +147,7 @@ const SysTray = () => Widget.Box({
 const Left = () => Widget.Box({
     spacing: 8,
     children: [
+        AppLauncherButton(),
         Workspaces(),
         ClientTitle(),
     ],
@@ -152,10 +165,10 @@ const Right = () => Widget.Box({
     hpack: 'end',
     spacing: 8,
     children: [
+        SysTray(),
         Volume(),
         BatteryLabel(),
         Clock(),
-        SysTray(),
     ],
 });
 
