@@ -15,3 +15,5 @@ hypr/env.conf
 !swaylock/**
 !foot
 !foot/**
+!ags
+!ags/**

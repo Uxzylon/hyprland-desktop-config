@@ -6,9 +6,11 @@ for _prs in "${_ps[@]}"; do
 		killall -9 ${_prs}
 	fi
 done
+ags -b hypr -q
 
-hyperctl reload
-dunst -conf $HOME/.config/dunst/dunstrc &
-waybar --bar main-bar --log-level error --config $HOME/.config/waybar/config --style $HOME/.config/waybar/style.css &
+hyprctl reload
+#dunst -conf $HOME/.config/dunst/dunstrc &
+#waybar --bar main-bar --log-level error --config $HOME/.config/waybar/config --style $HOME/.config/waybar/style.css &
+ags -b hypr
 swww init &
 swww img $SWWW_WALLPAPER &
