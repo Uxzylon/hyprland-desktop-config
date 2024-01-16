@@ -8,6 +8,7 @@ for _prs in "${_ps[@]}"; do
 done
 ags -b hypr -q
 ags quit
+rm -rf ~/.config/ags/style.css
 
 hyprctl reload
 

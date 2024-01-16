@@ -1,0 +1,38 @@
+window#powermenu, window#verification {
+    .shader {
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+}
+
+window#powermenu .window-content {
+    padding: 1em;
+    border-radius: 1em;
+    background-color: $theme_bg_color;
+    
+
+    button {
+
+        image {
+            border-radius: 0;
+            min-width: 1.7em;
+            min-height: 1.7em;
+            font-size: 4em;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+        }
+
+        label, image {
+            color: transparentize($theme_fg_color, 0.1);
+        }
+
+        &:hover {
+            label{ color: $theme_fg_color; }
+        }
+
+        &:focus, &:active {
+            label{ color: $accent; }
+        }
+    }
+}
