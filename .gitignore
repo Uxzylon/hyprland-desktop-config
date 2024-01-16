@@ -17,3 +17,4 @@ hypr/env.conf
 !foot/**
 !ags
 !ags/**
+ags/style.css
