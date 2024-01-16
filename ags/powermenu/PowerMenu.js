@@ -1,6 +1,6 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
-import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
+import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
 import ShadedPopup from '../ShadedPopup.js';
 
 const WINDOW_NAME = 'powermenu';
@@ -30,7 +30,7 @@ const performAction = (action) => {
     }
 
     App.closeWindow(WINDOW_NAME);
-    Utils.exec(command);
+    execAsync(command);
 };
 
 /**
