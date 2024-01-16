@@ -4,6 +4,7 @@ import { monitorFile } from 'resource:///com/github/Aylur/ags/utils.js';
 import Bar from './bar/Bar.js';
 import AppLauncher from './applauncher/AppLauncher.js';
 import PowerMenu from './powermenu/PowerMenu.js';
+import { notificationPopup } from './notification-popups/NotificationPopups.js';
 
 monitorFile(
     `${App.configDir}/style.css`,
@@ -26,6 +27,7 @@ const windows = () => [
     forMonitors(Bar),
     AppLauncher(),
     PowerMenu(),
+    notificationPopup,
 ];
 
 // exporting the config so ags can manage the windows

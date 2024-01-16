@@ -59,18 +59,18 @@ const Clock = () => Widget.Label({
 
 // we don't need dunst or any other notification daemon
 // because the Notifications module is a notification daemon itself
-const Notification = () => Widget.Box({
-    class_name: 'notification',
-    visible: Notifications.bind('popups').transform(p => p.length > 0),
-    children: [
-        Widget.Icon({
-            icon: 'preferences-system-notifications-symbolic',
-        }),
-        Widget.Label({
-            label: Notifications.bind('popups').transform(p => p[0]?.summary || ''),
-        }),
-    ],
-});
+// const Notification = () => Widget.Box({
+//     class_name: 'notification',
+//     visible: Notifications.bind('popups').transform(p => p.length > 0),
+//     children: [
+//         Widget.Icon({
+//             icon: 'preferences-system-notifications-symbolic',
+//         }),
+//         Widget.Label({
+//             label: Notifications.bind('popups').transform(p => p[0]?.summary || ''),
+//         }),
+//     ],
+// });
 
 const Media = () => Widget.Button({
     class_name: 'media',
@@ -163,7 +163,7 @@ const Center = () => Widget.Box({
     spacing: 8,
     children: [
         Media(),
-        Notification(),
+        //Notification(),
     ],
 });
 
