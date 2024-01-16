@@ -3,6 +3,7 @@ import Gdk from 'gi://Gdk';
 import { monitorFile } from 'resource:///com/github/Aylur/ags/utils.js';
 import Bar from './bar/Bar.js';
 import AppLauncher from './applauncher/AppLauncher.js';
+import PowerMenu from './powermenu/PowerMenu.js';
 
 monitorFile(
     `${App.configDir}/style.css`,
@@ -24,6 +25,7 @@ export function forMonitors(widget) {
 const windows = () => [
     forMonitors(Bar),
     AppLauncher(),
+    PowerMenu(),
 ];
 
 // exporting the config so ags can manage the windows

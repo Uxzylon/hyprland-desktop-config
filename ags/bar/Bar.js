@@ -38,6 +38,13 @@ const ClientTitle = () => Widget.Label({
     label: Hyprland.active.client.bind('title'),
 });
 
+const PowerButton = () => Widget.Button({
+    on_clicked: () => App.toggleWindow('powermenu'),
+    child: Widget.Icon({
+        icon: 'system-shutdown-symbolic',
+    }),
+});
+
 const Clock = () => Widget.Label({
     class_name: 'clock',
     setup: self => self
@@ -168,6 +175,7 @@ const Right = () => Widget.Box({
         Volume(),
         BatteryLabel(),
         Clock(),
+        PowerButton(),
     ],
 });
 
