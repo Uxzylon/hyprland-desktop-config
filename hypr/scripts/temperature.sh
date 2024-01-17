@@ -27,7 +27,7 @@ get_icon() {
 
 # Notify
 notify_user() {
-	notify-send -h string:x-dunst-stack-tag:brightness_notif -h int:value:$current -u low -i "$icon" "Temperature : $current K"
+	notify-send -h string:x-dunst-stack-tag:brightness_notif -h int:value:$current -u low -i "$icon" "Temperature" "$current K"
 }
 
 # Execute accordingly
