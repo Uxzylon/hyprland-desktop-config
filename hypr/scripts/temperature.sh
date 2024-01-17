@@ -5,7 +5,8 @@ notification_timeout=1000
 
 # Get brightness
 get_temperature() {
-	echo $(LC_NUMERIC=C printf "%.0f\n" "$(echo "($(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Temperature | cut -d ' ' -f2) - 1000) / 9000 * 100" | bc -l)")
+	#echo $(LC_NUMERIC=C printf "%.0f\n" "$(echo "($(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Temperature | cut -d ' ' -f2) - 1000) / 9000 * 100" | bc -l)")
+	echo $(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Temperature | cut -d ' ' -f2)
 }
 
 # Get icons
@@ -26,7 +27,7 @@ get_icon() {
 
 # Notify
 notify_user() {
-	notify-send -h string:x-dunst-stack-tag:brightness_notif -h int:value:$current -u low -i "$icon" "Temperature : $current%"
+	notify-send -h string:x-dunst-stack-tag:brightness_notif -h int:value:$current -u low -i "$icon" "Temperature : $current K"
 }
 
 # Execute accordingly
@@ -35,10 +36,10 @@ case "$1" in
 		get_temperature
 		;;
 	"--inc")
-		busctl --user call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n 100 && get_icon && notify_user
+		busctl --user call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n 200 && get_icon && notify_user
 		;;
 	"--dec")
-		busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100 && get_icon && notify_user
+		busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -200 && get_icon && notify_user
 		;;
 	*)
 		get_temperature

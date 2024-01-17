@@ -7,6 +7,8 @@ import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
+import screenBrightnessService from '../ScreenBrightness.js';
+import screenTemperatureService from '../ScreenTemperature.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
@@ -48,12 +50,7 @@ const PowerButton = () => Widget.Button({
 const Clock = () => Widget.Label({
     class_name: 'clock',
     setup: self => self
-        // this is bad practice, since exec() will block the main event loop
-        // in the case of a simple date its not really a problem
-        // .poll(1000, self => self.label = exec('date "+%H:%M:%S %b %e."'))
-
-        // this is what you should do
-        .poll(1000, self => execAsync(['date', '+%H:%M:%S %b %e.'])
+        .poll(1000, self => execAsync(['date', '+   %a %d %b %Y    %H:%M:%S'])
             .then(date => self.label = date)),
 });
 
@@ -87,36 +84,121 @@ const Media = () => Widget.Button({
     }, 'player-changed'),
 });
 
-const Volume = () => Widget.Box({
-    class_name: 'volume',
-    css: 'min-width: 180px',
-    children: [
-        Widget.Icon().hook(Audio, self => {
-            if (!Audio.speaker)
-                return;
+/** @param {'speaker' | 'microphone'} type */
+const Volume = (type = 'speaker') => Widget.EventBox({ 
+    on_scroll_up: () => {
+        Audio[type].volume = Math.min(Audio[type].volume + 0.05, 1);
+    },
+    on_scroll_down: () => {
+        Audio[type].volume = Math.max(Audio[type].volume - 0.05, 0);
+    },
+    on_primary_click: () => {
+        Audio[type].is_muted = !Audio[type].is_muted;
+    },
+    on_secondary_click: () => {
+        execAsync('pavucontrol')
+    },
+    child: Widget.Box({
+        class_name: 'volume',
+        children: [
+            Widget.Icon().hook(Audio, self => {
+                if (!Audio[type])
+                    return;
 
+                const category = {
+                    101: 'overamplified',
+                    67: 'high',
+                    34: 'medium',
+                    1: 'low',
+                    0: 'muted',
+                };
+
+                const icon = Audio[type].is_muted ? 0 : [101, 67, 34, 1, 0].find(
+                    threshold => threshold <= Audio[type].volume * 100);
+
+                const prefix = type === 'speaker' ? 'audio-volume' : 'microphone-sensitivity';
+                self.icon = `${prefix}-${category[icon]}-symbolic`;
+
+            }, `${type}-changed`),
+            Widget.Label().hook(Audio, self => {
+                if (Audio[type]?.is_muted) {
+                    self.label = '';
+                } else {
+                    self.label = `${Math.round((Audio[type]?.volume || 0) * 100)}%`;
+                }
+            }),
+        ],
+    })
+});
+
+const VolumeSpeaker = () => Volume('speaker');
+
+const VolumeMic = () => Volume('microphone');
+
+const Brightness = () => Widget.EventBox({ 
+    on_scroll_up: () => {
+        screenBrightnessService.screenBrightnessValue += 0.05;
+    },
+    on_scroll_down: () => {
+        screenBrightnessService.screenBrightnessValue -= 0.05;
+    },
+    child: Widget.Box({
+    class_name: 'brightness',
+    children: [
+        Widget.Icon().hook(screenBrightnessService, self => {
             const category = {
-                101: 'overamplified',
-                67: 'high',
-                34: 'medium',
-                1: 'low',
-                0: 'muted',
+                75: 'high',
+                35: 'medium',
+                0: 'low',
             };
 
-            const icon = Audio.speaker.is_muted ? 0 : [101, 67, 34, 1, 0].find(
-                threshold => threshold <= Audio.speaker.volume * 100);
+            const icon = [75, 35, 0].find(
+                threshold => threshold <= screenBrightnessService.screenBrightnessValue * 100);
 
-            self.icon = `audio-volume-${category[icon]}-symbolic`;
-        }, 'speaker-changed'),
-        Widget.Slider({
-            hexpand: true,
-            draw_value: false,
-            on_change: ({ value }) => Audio.speaker.volume = value,
-            setup: self => self.hook(Audio, () => {
-                self.value = Audio.speaker?.volume || 0;
-            }, 'speaker-changed'),
+            self.icon = `display-brightness-${category[icon]}-symbolic`;
+
+        }, `screen-brightness-changed`),
+        Widget.Label({
+            label: screenBrightnessService.bind('screen-brightness-value').transform(v => `${v}`),
+            setup: self => self.hook(screenBrightnessService, (self) => {
+                self.label = `${Math.round((screenBrightnessService.screenBrightnessValue) * 100)}%`;
+            }, 'screen-brightness-changed'),
         }),
     ],
+    })
+});
+
+const Temperature = () => Widget.EventBox({ 
+    on_scroll_up: () => {
+        screenTemperatureService.screenTemperatureValue += 200;
+    },
+    on_scroll_down: () => {
+        screenTemperatureService.screenTemperatureValue -= 200;
+    },
+    child: Widget.Box({
+    class_name: 'temperature',
+    children: [
+        Widget.Icon().hook(screenTemperatureService, self => {
+            const category = {
+                75: 'high',
+                35: 'medium',
+                0: 'low',
+            };
+
+            const icon = [75, 35, 0].find(
+                threshold => threshold <= (screenTemperatureService.screenTemperatureValue));
+
+            self.icon = `display-brightness-${category[icon]}-symbolic`;
+
+        }, `screen-temperature-changed`),
+        Widget.Label({
+            label: screenTemperatureService.bind('screen-temperature-value').transform(v => `${v}`),
+            setup: self => self.hook(screenTemperatureService, (self) => {
+                self.label = `${screenTemperatureService.screenTemperatureValue}K`;
+            }, 'screen-temperature-changed'),
+        }),
+    ],
+    })
 });
 
 const BatteryLabel = () => Widget.Box({
@@ -128,10 +210,9 @@ const BatteryLabel = () => Widget.Box({
                 return `battery-level-${Math.floor(p / 10) * 10}-symbolic`;
             }),
         }),
-        Widget.ProgressBar({
-            vpack: 'center',
-            fraction: Battery.bind('percent').transform(p => {
-                return p > 0 ? p / 100 : 0;
+        Widget.Label({
+            label: Battery.bind('percent').transform(p => {
+                return `${p}%`;
             }),
         }),
     ],
@@ -162,7 +243,7 @@ const Left = () => Widget.Box({
 const Center = () => Widget.Box({
     spacing: 8,
     children: [
-        Media(),
+        //Media(),
         //Notification(),
     ],
 });
@@ -172,7 +253,10 @@ const Right = () => Widget.Box({
     spacing: 8,
     children: [
         SysTray(),
-        Volume(),
+        Temperature(),
+        Brightness(),
+        VolumeSpeaker(),
+        VolumeMic(),
         BatteryLabel(),
         Clock(),
         PowerButton(),
