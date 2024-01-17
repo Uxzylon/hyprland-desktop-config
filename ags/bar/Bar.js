@@ -178,19 +178,9 @@ const Temperature = () => Widget.EventBox({
     child: Widget.Box({
     class_name: 'temperature',
     children: [
-        Widget.Icon().hook(screenTemperatureService, self => {
-            const category = {
-                75: 'high',
-                35: 'medium',
-                0: 'low',
-            };
-
-            const icon = [75, 35, 0].find(
-                threshold => threshold <= (screenTemperatureService.screenTemperatureValue));
-
-            self.icon = `display-brightness-${category[icon]}-symbolic`;
-
-        }, `screen-temperature-changed`),
+        Widget.Icon({
+            icon: 'weather-clear-night-symbolic',
+        }),
         Widget.Label({
             label: screenTemperatureService.bind('screen-temperature-value').transform(v => `${v}`),
             setup: self => self.hook(screenTemperatureService, (self) => {
