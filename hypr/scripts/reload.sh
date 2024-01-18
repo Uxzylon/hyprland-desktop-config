@@ -10,7 +10,9 @@ ags -b hypr -q
 ags quit
 rm -rf ~/.config/ags/style.css
 
-hyprctl reload
+if [[ "$1" == "--full" ]]; then
+	hyprctl reload
+fi
 
 #dunst -conf $HOME/.config/dunst/dunstrc &
 #waybar --bar main-bar --log-level error --config $HOME/.config/waybar/config --style $HOME/.config/waybar/style.css &
