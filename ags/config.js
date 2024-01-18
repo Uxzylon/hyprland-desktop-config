@@ -5,6 +5,7 @@ import Bar from './bar/Bar.js';
 import AppLauncher from './applauncher/AppLauncher.js';
 import PowerMenu from './powermenu/PowerMenu.js';
 import { notificationPopup } from './notification-popups/NotificationPopups.js';
+import { NotificationCenter } from './notification-center/NotificationCenter.js';
 
 const scss = `${App.configDir}/style.scss`
 const css = `${App.configDir}/style.css`
@@ -27,5 +28,6 @@ export default {
         AppLauncher(),
         PowerMenu(),
         notificationPopup,
+        NotificationCenter(),
     ],
 };

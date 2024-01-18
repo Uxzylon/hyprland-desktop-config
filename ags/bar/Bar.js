@@ -244,6 +244,44 @@ const SysTray = () => Widget.Box({
     }),
 });
 
+// export const DNDSwitch = () => Widget.Button({
+//     on_clicked: () => Notifications.dnd = !Notifications.dnd,
+//     binds: [
+//         ['active', Notifications, 'dnd'],
+//     ],
+//     child: Widget.Icon({
+//         binds: [
+//             ['icon', Notifications, 'dnd', dnd => {
+//                 if (dnd) {
+//                     return 'notification-disabled-symbolic';
+//                 }
+//                 return 'notification-symbolic';
+//             }],
+//         ],
+//     }),
+// });
+
+const NotificationCenter = () => Widget.Button({
+    on_clicked: () => App.toggleWindow('notification-center'),
+    child: Widget.Box({
+        children: [
+            Widget.Icon({
+                icon: Notifications.bind('dnd').transform(dnd => {
+                    if (dnd) {
+                        return 'notification-disabled-symbolic';
+                    }
+                    return 'notification-symbolic';
+                }),
+            }),
+            Widget.Label({
+                label: Notifications.bind('notifications').transform(n => {
+                    return ` ${n.length}`;
+                }),
+            }),
+        ],
+    }),
+});
+
 // layout of the bar
 const Left = () => Widget.Box({
     spacing: 8,
@@ -267,6 +305,7 @@ const Right = () => Widget.Box({
     spacing: 8,
     children: [
         SysTray(),
+        NotificationCenter(),
         Gammarelay(),
         BrightnessCtl(),
         VolumeSpeaker(),

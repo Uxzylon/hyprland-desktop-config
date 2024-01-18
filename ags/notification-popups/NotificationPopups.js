@@ -96,9 +96,8 @@ export const notificationPopup = Widget.Window({
         class_name: 'notifications',
         vertical: true,
         children: Notifications.bind('popups').transform(popups => {
-            // if last notification is "Volume", "Brightness" or "Temperature", close all others
             const last = popups[popups.length - 1];
-            if (popups.length && last.summary.match(/^(Volume|Brightness|Temperature)$/)) {
+            if (popups.length && last.summary.match(/^(Volume|Brightness|Brightness Gamma|Temperature)$/)) {
                 for (const notification of Notifications.popups) {
                     if (notification !== last) {
                         notification.close();
