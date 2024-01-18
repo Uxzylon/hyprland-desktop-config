@@ -7,8 +7,9 @@ import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
-import screenBrightnessService from '../ScreenBrightness.js';
-import screenTemperatureService from '../ScreenTemperature.js';
+import GammarelayBrightnessService from '../services/GammarelayBrightness.js';
+import GammarelayTemperatureService from '../services/GammarelayTemperature.js';
+import Brightness from '../services/Brightness.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
@@ -135,17 +136,17 @@ const VolumeSpeaker = () => Volume('speaker');
 
 const VolumeMic = () => Volume('microphone');
 
-const Brightness = () => Widget.EventBox({ 
+const BrightnessCtl = () => Widget.EventBox({ 
     on_scroll_up: () => {
-        screenBrightnessService.screenBrightnessValue += 0.05;
+        Brightness.screenValue += 0.05;
     },
     on_scroll_down: () => {
-        screenBrightnessService.screenBrightnessValue -= 0.05;
+        Brightness.screenValue -= 0.05;
     },
     child: Widget.Box({
     class_name: 'brightness',
     children: [
-        Widget.Icon().hook(screenBrightnessService, self => {
+        Widget.Icon().hook(Brightness, self => {
             const category = {
                 75: 'high',
                 35: 'medium',
@@ -153,42 +154,65 @@ const Brightness = () => Widget.EventBox({
             };
 
             const icon = [75, 35, 0].find(
-                threshold => threshold <= screenBrightnessService.screenBrightnessValue * 100);
+                threshold => threshold <= Brightness.screenValue * 100);
 
             self.icon = `display-brightness-${category[icon]}-symbolic`;
 
-        }, `screen-brightness-changed`),
+        }, `screen-changed`),
         Widget.Label({
-            label: screenBrightnessService.bind('screen-brightness-value').transform(v => `${v}`),
-            setup: self => self.hook(screenBrightnessService, (self) => {
-                self.label = `${Math.round((screenBrightnessService.screenBrightnessValue) * 100)}%`;
-            }, 'screen-brightness-changed'),
+            label: Brightness.bind('screen-value').transform(v => `${v}`),
+            setup: self => self.hook(Brightness, (self) => {
+                self.label = `${Math.round((Brightness.screenValue) * 100)}%`;
+            }, 'screen-changed'),
         }),
     ],
     })
 });
 
-const Temperature = () => Widget.EventBox({ 
-    on_scroll_up: () => {
-        screenTemperatureService.screenTemperatureValue += 200;
-    },
-    on_scroll_down: () => {
-        screenTemperatureService.screenTemperatureValue -= 200;
-    },
-    child: Widget.Box({
-    class_name: 'temperature',
+const Gammarelay = () => Widget.Box({ 
     children: [
         Widget.Icon({
             icon: 'weather-clear-night-symbolic',
         }),
-        Widget.Label({
-            label: screenTemperatureService.bind('screen-temperature-value').transform(v => `${v}`),
-            setup: self => self.hook(screenTemperatureService, (self) => {
-                self.label = `${screenTemperatureService.screenTemperatureValue}K`;
-            }, 'screen-temperature-changed'),
+        Widget.EventBox({
+            class_name: 'brightness',
+            on_scroll_up: () => {
+                GammarelayBrightnessService.screenBrightnessValue += 0.05;
+            },
+            on_scroll_down: () => {
+                GammarelayBrightnessService.screenBrightnessValue -= 0.05;
+            },
+            child: Widget.Box({
+                children: [
+                    Widget.Label({
+                        label: GammarelayBrightnessService.bind('screen-brightness-value').transform(v => `${v}`),
+                        setup: self => self.hook(GammarelayBrightnessService, (self) => {
+                            self.label = `[${Math.round((GammarelayBrightnessService.screenBrightnessValue) * 100)}% `;
+                        }, 'screen-brightness-changed'),
+                    }),
+                ],
+            }),
+        }),
+        Widget.EventBox({
+            class_name: 'temperature',
+            on_scroll_up: () => {
+                GammarelayTemperatureService.screenTemperatureValue += 200;
+            },
+            on_scroll_down: () => {
+                GammarelayTemperatureService.screenTemperatureValue -= 200;
+            },
+            child: Widget.Box({
+                children: [
+                    Widget.Label({
+                        label: GammarelayTemperatureService.bind('screen-temperature-value').transform(v => `${v}`),
+                        setup: self => self.hook(GammarelayTemperatureService, (self) => {
+                            self.label = ` ${GammarelayTemperatureService.screenTemperatureValue}K]`;
+                        }, 'screen-temperature-changed'),
+                    }),
+                ],
+            }),
         }),
     ],
-    })
 });
 
 const BatteryLabel = () => Widget.Box({
@@ -243,8 +267,8 @@ const Right = () => Widget.Box({
     spacing: 8,
     children: [
         SysTray(),
-        Temperature(),
-        Brightness(),
+        Gammarelay(),
+        BrightnessCtl(),
         VolumeSpeaker(),
         VolumeMic(),
         BatteryLabel(),
