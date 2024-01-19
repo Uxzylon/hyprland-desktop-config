@@ -53,6 +53,7 @@ export const NotificationList = () => Widget.Scrollable({
 });
 
 export const ClearButton = () => Widget.Button({
+    className: 'notification-button',
     onClicked: () => Notifications.clear(),
     binds: [
         ['sensitive', Notifications, 'notifications', n => n.length > 0],
@@ -71,6 +72,7 @@ export const ClearButton = () => Widget.Button({
 });
 
 export const DNDSwitch = () => Widget.Button({
+    className: 'notification-button',
     on_clicked: () => Notifications.dnd = !Notifications.dnd,
     binds: [
         ['active', Notifications, 'dnd'],

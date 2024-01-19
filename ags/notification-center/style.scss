@@ -1,3 +1,5 @@
+$icon_size: 2.5em;
+
 window#notifications {
     all: unset;
 }
@@ -7,21 +9,21 @@ window#notifications box.notifications {
 }
 
 .icon {
-    min-width: 68px;
-    min-height: 68px;
+    min-width: $icon_size;
+    min-height: $icon_size;
     margin-right: 1em;
 }
 
 .icon image {
-    font-size: 58px;
+    font-size: $icon_size;
     /* to center the icon */
     margin: 5px;
     color: $theme_fg_color;
 }
 
 .icon box {
-    min-width: 68px;
-    min-height: 68px;
+    min-width: $icon_size;
+    min-height: $icon_size;
     border-radius: 7px;
 }
 
@@ -40,11 +42,12 @@ window#notifications box.notifications {
 
 .title {
     color: $theme_fg_color;
-    font-size: 1.4em;
+    font-size: 1.2em;
 }
 
 .body {
     color: $theme_unfocused_fg_color;
+    font-size: 1em;
 }
 
 .actions .action-button {
@@ -60,100 +63,41 @@ window#notifications box.notifications {
     margin-right: 0;
 }
 
-// /* Assuming Adwaita-dark as Gtk theme */
+#notification-center {
+    background-color: $theme_bg_color;
+}
 
-// #popup-window {
-//     background-color: transparent;
-// }
+.notification-button {
+    border: none;
+    box-shadow: none;
+    border-radius: 7px;
+    background-color: rgba(255,255,255, 0.1);
+    margin-left: 8px;
+}
 
-// #notification-center {
-//     background-color: #232323;
-// }
+.notification-button:hover {
+    background-color: rgba(255,255,255, 0.2);
+    border-bottom: 0px;
+}
 
-// #popup-window .notification > * {
-//     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-// }
+.notification-button:active {
+    background-color: rgba(255,255,255, 0.3);
+}
 
-// #popup-window *,
-// #notification-center *{
-//     outline: none;
-//     color: white;
-// }
+.list {
+    margin: 8px;
+    min-width: 30em;
+}
 
-// button {
-//     border: none;
-//     box-shadow: none;
-//     border-radius: 7px;
-//     background-color: rgba(255,255,255, 0.1);
-// }
+.header {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-// button:hover {
-//     background-color: rgba(255,255,255, 0.2);
-// }
+.placeholder image {
+    font-size: 2em;
+}
 
-// button:active {
-//     background-color: rgba(255,255,255, 0.3);
-// }
-
-// .notification > * {
-//     margin: 8px;
-//     padding: 8px;
-//     border-radius: 15px;
-//     background-color: #141414;
-// }
-
-// .notification .icon {
-//     border-radius: 7px;
-//     margin-right: 8px;
-// }
-
-// .notification .close-button {
-//     padding: 0;
-//     margin: 0;
-//     min-height: 1.4em;
-//     min-width: 1.4em;
-//     border-radius: 1em;
-// }
-
-// .notification .title {
-//     font-size: 1.1em;
-//     color: white;
-// }
-
-// .notification .description {
-//     color: rgba(255, 255, 255, 0.7);
-// }
-
-// .list {
-//     margin: 8px;
-//     min-width: 380px;
-// }
-
-// .action-button {
-//     margin: 0 4px;
-// }
-
-// .action-button:first-child {
-//     margin-left: 0;
-// }
-
-// .action-button:last-child {
-//     margin-right: 0;
-// }
-
-// .action-button:last-child:first-child {
-//     margin: 0;
-// }
-
-// .header {
-//     padding: 8px;
-//     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-// }
-
-// .placeholder image {
-//     font-size: 8em;
-// }
-
-// .placeholder label {
-//     font-size: 1.4em;
-// }
+.placeholder label {
+    font-size: 1em;
+}

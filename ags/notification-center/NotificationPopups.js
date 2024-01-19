@@ -4,7 +4,7 @@ import Notification, { NotificationExceptions } from './Notification.js';
 
 export default () => Widget.Window({
     name: 'notifications',
-    anchor: ['top', 'right'],
+    anchor: ['top', 'center'],
     child: Widget.Box({
         class_name: 'notifications',
         vertical: true,

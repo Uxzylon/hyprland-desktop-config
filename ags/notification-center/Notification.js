@@ -67,7 +67,7 @@ const Notification = n => {
     });
 
     const close = Widget.Button({
-        class_name: 'close-button',
+        class_name: 'notification-button',
         vpack: 'start',
         child: Widget.Icon('window-close-symbolic'),
         on_clicked: n.close.bind(n),
