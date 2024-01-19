@@ -1,4 +1,4 @@
-import { Notification } from './Notification.js';
+import Notification, { NotificationExceptions } from './Notification.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
@@ -11,7 +11,7 @@ const List = () => Widget.Box({
         if (Notifications.notifications.length > 0) {
             for (let i = 0; i < Notifications.notifications.length; i++) {
                 var notif = Notifications.notifications[i];
-                if (notif.summary.match(/^(Volume|Brightness|Brightness Gamma|Temperature)$/) && !notif.popup) {
+                if (notif.summary.match(NotificationExceptions) && !notif.popup) {
                     notif.close();
                 }
             }

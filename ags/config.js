@@ -4,8 +4,8 @@ import { exec } from 'resource:///com/github/Aylur/ags/utils.js';
 import Bar from './bar/Bar.js';
 import AppLauncher from './applauncher/AppLauncher.js';
 import PowerMenu from './powermenu/PowerMenu.js';
-import { notificationPopup } from './notification-popups/NotificationPopups.js';
-import { NotificationCenter } from './notification-center/NotificationCenter.js';
+import NotificationPopups from './notification-center/NotificationPopups.js';
+import NotificationCenter from './notification-center/NotificationCenter.js';
 
 const scss = `${App.configDir}/style.scss`
 const css = `${App.configDir}/style.css`
@@ -27,7 +27,7 @@ export default {
         forMonitors(Bar),
         AppLauncher(),
         PowerMenu(),
-        notificationPopup,
+        NotificationPopups(),
         NotificationCenter(),
     ],
 };

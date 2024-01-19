@@ -12,7 +12,7 @@ const Header = () => Widget.Box({
     ],
 });
 
-export const NotificationCenter = () => Widget.Window({
+export default () => Widget.Window({
     name: 'notification-center',
     anchor: ['right', 'top', 'bottom'],
     popup: true,
@@ -35,32 +35,3 @@ export const NotificationCenter = () => Widget.Window({
         ],
     }),
 });
-
-// timeout(500, () => execAsync([
-//     'notify-send',
-//     'Notification Center example',
-//     'To have the panel popup run "ags toggle-window notification-center"' +
-//     '\nPress ESC to close it.',
-// ]).catch(console.error));
-
-// export default {
-//     style: App.configDir + '/style.css',
-//     windows: [
-//         NotificationsPopupWindow(),
-//         NotificationCenter(),
-//     ]
-// }
-
-// export default () => ShadedPopup({
-//     name: WINDOW_NAME,
-//     expand: true,
-//     child: Widget.Box({
-//         children: [
-//             SysButton('sleep', 'Sleep', 'system-shutdown-symbolic'),
-//             SysButton('reboot', 'Reboot', 'system-shutdown-symbolic'),
-//             SysButton('logout', 'Logout', 'system-shutdown-symbolic'),
-//             SysButton('shutdown', 'Shutdown', 'system-shutdown-symbolic'),
-//             SysButton('lock', 'Lock', 'system-lock-screen-symbolic'),
-//         ],
-//     }),
-// });

@@ -1,120 +1,101 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import { lookUpIcon, timeout } from 'resource:///com/github/Aylur/ags/utils.js';
+import { lookUpIcon } from 'resource:///com/github/Aylur/ags/utils.js';
 
-const NotificationIcon = ({ appEntry, appIcon, image }) => {
+export const NotificationExceptions = "^(Volume|Brightness|Brightness Gamma|Temperature)$";
+
+/** @param {import('resource:///com/github/Aylur/ags/service/notifications.js').Notification} n */
+const NotificationIcon = ({ app_entry, app_icon, image }) => {
     if (image) {
         return Widget.Box({
-            vpack: 'start',
-            hexpand: false,
-            className: 'icon img',
             css: `
                 background-image: url("${image}");
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: center;
-                min-width: 78px;
-                min-height: 78px;
             `,
         });
     }
 
     let icon = 'dialog-information-symbolic';
-    if (lookUpIcon(appIcon))
-        icon = appIcon;
+    if (lookUpIcon(app_icon))
+        icon = app_icon;
 
-    if (lookUpIcon(appEntry))
-        icon = appEntry;
+    if (app_entry && lookUpIcon(app_entry))
+        icon = app_entry;
 
-    return Widget.Box({
+    return Widget.Icon(icon);
+};
+
+/** @param {import('resource:///com/github/Aylur/ags/service/notifications.js').Notification} n */
+const Notification = n => {
+    const icon = Widget.Box({
         vpack: 'start',
-        hexpand: false,
-        className: 'icon',
-        css: `
-            min-width: 78px;
-            min-height: 78px;
-        `,
-        children: [Widget.Icon({
-            icon, size: 58,
-            hpack: 'center', hexpand: true,
-            vpack: 'center', vexpand: true,
-        })],
+        class_name: 'icon',
+        child: NotificationIcon(n),
+    });
+
+    const title = Widget.Label({
+        class_name: 'title',
+        xalign: 0,
+        justification: 'left',
+        hexpand: true,
+        max_width_chars: 24,
+        truncate: 'end',
+        wrap: true,
+        label: n.summary,
+        use_markup: true,
+    });
+
+    const body = Widget.Label({
+        class_name: 'body',
+        hexpand: true,
+        use_markup: true,
+        xalign: 0,
+        justification: 'left',
+        label: n.body,
+        wrap: true,
+    });
+
+    const actions = Widget.Box({
+        class_name: 'actions',
+        children: n.actions.map(({ id, label }) => Widget.Button({
+            class_name: 'action-button',
+            on_clicked: () => n.invoke(id),
+            hexpand: true,
+            child: Widget.Label(label),
+        })),
+    });
+
+    const close = Widget.Button({
+        class_name: 'close-button',
+        vpack: 'start',
+        child: Widget.Icon('window-close-symbolic'),
+        on_clicked: n.close.bind(n),
+    });
+
+    return Widget.EventBox({
+        on_primary_click: () => n.dismiss(),
+        child: Widget.Box({
+            class_name: `notification ${n.urgency}`,
+            vertical: true,
+            children: [
+                Widget.Box({
+                    children: [
+                        icon,
+                        Widget.Box({
+                            vertical: true,
+                            children: [
+                                title,
+                                body,
+                            ],
+                        }),
+                        close,
+                    ],
+                }),
+                actions,
+            ],
+        }),
     });
 };
 
-export const Notification = n => Widget.EventBox({
-    className: `notification ${n.urgency}`,
-    onPrimaryClick: () => n.dismiss(),
-    properties: [['hovered', false]],
-    onHover: self => {
-        if (self._hovered)
-            return;
-
-        // if there are action buttons and they are hovered
-        // EventBox onHoverLost will fire off immediately,
-        // so to prevent this we delay it
-        timeout(300, () => self._hovered = true);
-    },
-    onHoverLost: self => {
-        if (!self._hovered)
-            return;
-
-        self._hovered = false;
-        n.dismiss();
-    },
-    vexpand: false,
-    child: Widget.Box({
-        vertical: true,
-        children: [
-            Widget.Box({
-                children: [
-                    NotificationIcon(n),
-                    Widget.Box({
-                        hexpand: true,
-                        vertical: true,
-                        children: [
-                            Widget.Box({
-                                children: [
-                                    Widget.Label({
-                                        className: 'title',
-                                        xalign: 0,
-                                        justification: 'left',
-                                        hexpand: true,
-                                        maxWidthChars: 24,
-                                        truncate: 'end',
-                                        wrap: true,
-                                        label: n.summary,
-                                        useMarkup: true,
-                                    }),
-                                    Widget.Button({
-                                        className: 'close-button',
-                                        vpack: 'start',
-                                        child: Widget.Icon('window-close-symbolic'),
-                                        onClicked: n.close.bind(n),
-                                    }),
-                                ],
-                            }),
-                            Widget.Label({
-                                className: 'description',
-                                hexpand: true,
-                                useMarkup: true,
-                                xalign: 0,
-                                justification: 'left',
-                                label: n.body,
-                                wrap: true,
-                            }),
-                        ],
-                    }),
-                ],
-            }),
-            Widget.Box({
-                className: 'actions',
-                children: n.actions.map(({ id, label }) => Widget.Button({
-                    className: 'action-button',
-                    onClicked: () => n.invoke(id),
-                    hexpand: true,
-                    child: Widget.Label(label),
-                })),
-            }),
-        ],
-    }),
-});
+export default Notification;

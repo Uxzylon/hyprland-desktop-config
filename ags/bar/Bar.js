@@ -10,6 +10,7 @@ import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
 import GammarelayBrightnessService from '../services/GammarelayBrightness.js';
 import GammarelayTemperatureService from '../services/GammarelayTemperature.js';
 import Brightness from '../services/Brightness.js';
+import { NotificationExceptions } from '../notification-center/Notification.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
@@ -244,23 +245,6 @@ const SysTray = () => Widget.Box({
     }),
 });
 
-// export const DNDSwitch = () => Widget.Button({
-//     on_clicked: () => Notifications.dnd = !Notifications.dnd,
-//     binds: [
-//         ['active', Notifications, 'dnd'],
-//     ],
-//     child: Widget.Icon({
-//         binds: [
-//             ['icon', Notifications, 'dnd', dnd => {
-//                 if (dnd) {
-//                     return 'notification-disabled-symbolic';
-//                 }
-//                 return 'notification-symbolic';
-//             }],
-//         ],
-//     }),
-// });
-
 const NotificationCenter = () => Widget.Button({
     on_clicked: () => App.toggleWindow('notification-center'),
     child: Widget.Box({
@@ -275,7 +259,8 @@ const NotificationCenter = () => Widget.Button({
             }),
             Widget.Label({
                 label: Notifications.bind('notifications').transform(n => {
-                    return ` ${n.length}`;
+                    var filteredNotifications = n.filter(notification => !notification.summary.match(NotificationExceptions));
+                    return ` ${filteredNotifications.length}`;
                 }),
             }),
         ],
