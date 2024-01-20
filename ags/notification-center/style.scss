@@ -33,7 +33,7 @@ window#notifications box.notifications {
     padding: 1em;
     margin: .5em;
     border: 1px solid $wm_borders_edge;
-    background-color: $theme_bg_color;
+    background-color: $theme_bg_color_alpha;
 }
 
 .notification.critical {
@@ -64,7 +64,7 @@ window#notifications box.notifications {
 }
 
 #notification-center {
-    background-color: $theme_bg_color;
+    background-color: $theme_bg_color_alpha;
 }
 
 .notification-button {

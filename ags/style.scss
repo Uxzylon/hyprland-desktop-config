@@ -1,4 +1,5 @@
-$theme_bg_color: rgba(#1a1b26, 0.7);
+$theme_bg_color: #1a1b26;
+$theme_bg_color_alpha: rgba($theme_bg_color, 0.7);
 $theme_fg_color: #c0caf5;
 $theme_selected_bg_color: #a9b1d6;
 $wm_borders_edge: #e3e4e7;
@@ -7,4 +8,5 @@ $accent: #ff79c6;
 
 @import './bar/style';
 @import './powermenu/style';
+@import './applauncher/style';
 @import './notification-center/style';

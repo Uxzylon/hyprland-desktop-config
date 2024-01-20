@@ -99,6 +99,8 @@ export default () => Widget.Window({
     popup: true,
     visible: false,
     focusable: true,
+    name: 'applauncher',
+    anchor: ['top', 'left'],
     child: Applauncher({
         width: 500,
         height: 500,
