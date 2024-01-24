@@ -216,22 +216,43 @@ const Gammarelay = () => Widget.Box({
     ],
 });
 
-const BatteryLabel = () => Widget.Box({
-    class_name: 'battery',
-    visible: Battery.bind('available'),
-    children: [
-        Widget.Icon({
-            icon: Battery.bind('percent').transform(p => {
-                return `battery-level-${Math.floor(p / 10) * 10}-symbolic`;
-            }),
+const BatteryLabel = () => {
+    return Widget.EventBox({
+        on_hover: () => popup.visible = true,
+        on_hover_lost: () => popup.visible = false,
+        setup: self => self.hook(Battery, self => {
+            const tr = Battery.time_remaining;
+            const hours = Math.floor(tr / 3600);
+            const minutes = Math.floor((tr - hours * 3600) / 60);
+            var time = `${hours}h ${minutes}m`;
+            var power = Math.round(Battery.energy_rate * 100) / 100;
+
+            if (Battery.charging) {
+                time += ' until charged';
+                power = `+${power}W`;
+            } else {
+                time += ' remaining';
+                power = `-${power}W`;
+            }
+
+            self.tooltip_text = `${time}\n${power}`;
+        }, 'changed'),
+        child: Widget.Box({
+            class_name: 'battery',
+            visible: Battery.bind('available'),
+            children: [
+                Widget.Icon({
+                    icon: Battery.bind('icon-name'),
+                }),
+                Widget.Label({
+                    label: Battery.bind('percent').transform(p => {
+                        return `${p}%`;
+                    }),
+                }),
+            ],
         }),
-        Widget.Label({
-            label: Battery.bind('percent').transform(p => {
-                return `${p}%`;
-            }),
-        }),
-    ],
-});
+    })
+}
 
 const SysTray = () => Widget.Box({
     children: SystemTray.bind('items').transform(items => {
