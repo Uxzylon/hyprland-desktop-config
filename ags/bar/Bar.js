@@ -7,6 +7,7 @@ import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
+import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import GammarelayBrightnessService from '../services/GammarelayBrightness.js';
 import GammarelayTemperatureService from '../services/GammarelayTemperature.js';
 import Brightness from '../services/Brightness.js';
@@ -288,6 +289,74 @@ const NotificationCenter = () => Widget.Button({
     }),
 });
 
+const cpus = Variable(0, {
+    poll: [5000, 'sar --dec=0 -m CPU -u ALL -P ALL 1 1', out => {
+        const lines = out.split('\n');
+        
+        // skip header
+        lines.splice(0, 3);
+
+        const cpuUsages = [];
+        const lineBreak = lines.findIndex(line => line === '');
+        for (let i = 0; i < lineBreak; i++) {
+            cpuUsages.push(Math.round(parseFloat(lines[i].split(/\s+/)[2].replace(',', '.'))));
+        }
+
+        const cpuFreqs = [];
+        lines.splice(0, lineBreak + 2);
+        for (let i = 0; i < lineBreak; i++) {
+            cpuFreqs.push(Math.round(parseFloat(lines[i].split(/\s+/)[2].replace(',', '.'))));
+        }
+
+        const cpus = [cpuUsages, cpuFreqs]
+        return cpus;
+    }],
+});
+
+const CpuMonitor = () => Widget.Box({
+    tooltip_text: cpus.bind().transform(v => {
+        var text = '';
+        for (let i = 1; i < v[0].length; i++) {
+            text += `CPU${i}: ${v[0][i]}% ${v[1][i]}MHz`;
+            if (i < v[0].length - 1) {
+                text += '\n';
+            }
+        }
+        return text;
+    }),
+    children: [
+        Widget.Icon({
+            icon: 'cpu-symbolic',
+        }),
+        Widget.Label({
+            label: cpus.bind().transform(v => {
+                return `${v[0][0]}% ${(v[1][0] / 1000).toFixed(2)}GHz`;
+            }),
+        }),
+    ],
+});
+
+const ram = Variable(0, {
+    poll: [2000, 'free', out => out.split('\n')
+        .find(line => line.includes('Mem:'))
+        .split(/\s+/)
+        .splice(1, 2)],
+});
+
+const RamMonitor = () => Widget.Box({
+    tooltip_text: ram.bind().transform(v => {
+        return `${Math.round(v[1] / 1024)}MB / ${Math.round(v[0] / 1024)}MB`;
+    }),
+    children: [
+        Widget.Icon({
+            icon: 'memory-symbolic',
+        }),
+        Widget.Label({
+            label: ram.bind().transform(v => `${Math.round(v[1] / v[0] * 100)}%`),
+        }),
+    ],
+});
+
 // layout of the bar
 const Left = () => Widget.Box({
     spacing: 8,
@@ -312,6 +381,8 @@ const Right = () => Widget.Box({
     children: [
         SysTray(),
         NotificationCenter(),
+        RamMonitor(),
+        CpuMonitor(),
         Gammarelay(),
         BrightnessCtl(),
         VolumeSpeaker(),
