@@ -357,6 +357,24 @@ const RamMonitor = () => Widget.Box({
     ],
 });
 
+const updates = Variable(0, {
+    poll: [30000, 'checkupdates | wc -l', out => out],
+});
+
+const UpdatesMonitor = () => Widget.Button({
+    on_clicked: () => execAsync(['bash', '-c', 'foot yay -Syu']),
+    child: Widget.Box({
+        children: [
+            Widget.Icon({
+                icon: 'system-software-update-symbolic',
+            }),
+            Widget.Label({
+                label: updates.bind().transform(v => `${v}`),
+            }),
+        ],
+    }),
+});
+
 // layout of the bar
 const Left = () => Widget.Box({
     spacing: 8,
@@ -381,6 +399,7 @@ const Right = () => Widget.Box({
     children: [
         SysTray(),
         NotificationCenter(),
+        UpdatesMonitor(),
         RamMonitor(),
         CpuMonitor(),
         Gammarelay(),
