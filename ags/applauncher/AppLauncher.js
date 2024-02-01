@@ -54,7 +54,11 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
         on_accept: () => {
             if (applications[0]) {
                 App.toggleWindow(WINDOW_NAME);
-                applications[0].attribute.app.launch();
+                
+                const appsFound = applications.filter(app => app.visible);
+                if (appsFound.length > 0) {
+                    appsFound[0].attribute.app.launch();
+                }
             }
         },
 
