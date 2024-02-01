@@ -16,6 +16,7 @@ export default () => Widget.Window({
     name: 'notification-center',
     anchor: ['right', 'top', 'bottom'],
     popup: true,
+    keymode: 'on-demand',
     focusable: true,
     visible: false,
     child: Widget.Box({
