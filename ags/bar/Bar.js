@@ -162,7 +162,6 @@ const BrightnessCtl = () => Widget.EventBox({
 
         }, `screen-changed`),
         Widget.Label({
-            label: Brightness.bind('screen-value').transform(v => `${v}`),
             setup: self => self.hook(Brightness, (self) => {
                 self.label = `${Math.round((Brightness.screenValue) * 100)}%`;
             }, 'screen-changed'),
@@ -268,6 +267,7 @@ const SysTray = () => Widget.Box({
 });
 
 const NotificationCenter = () => Widget.Button({
+    class_name: 'bar-button',
     on_clicked: () => App.toggleWindow('notification-center'),
     child: Widget.Box({
         children: [
@@ -358,10 +358,11 @@ const RamMonitor = () => Widget.Box({
 });
 
 const updates = Variable(0, {
-    poll: [30000, 'checkupdates | wc -l', out => out],
+    poll: [30000, 'bash -c "checkupdates | wc -l"', out => out],
 });
 
 const UpdatesMonitor = () => Widget.Button({
+    class_name: 'bar-button',
     on_clicked: () => execAsync(['bash', '-c', 'foot yay -Syu']),
     child: Widget.Box({
         children: [
