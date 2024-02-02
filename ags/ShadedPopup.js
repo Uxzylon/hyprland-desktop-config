@@ -21,7 +21,9 @@ export default ({ name, child, ...rest }) => Widget.Window({
     name,
     visible: false,
     popup: true,
-    focusable: true,
+    layer: 'overlay',
+    keymode: 'exclusive',
+    exclusivity: 'exclusive',
     setup() {
         child.toggleClassName('window-content');
     },
