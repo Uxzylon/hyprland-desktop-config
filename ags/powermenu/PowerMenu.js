@@ -8,9 +8,11 @@ const WINDOW_NAME = 'powermenu';
 const performAction = (action) => {
     let command;
 
+    const lock = 'bash -c "sleep 0.5s && ags -b hypr -r \\"lockscreens.forEach(win=>win.visible=true)\\" & disown';
+
     switch (action) {
         case 'sleep':
-            command = 'systemctl suspend';
+            command = lock + ' && systemctl suspend"';
             break;
         case 'reboot':
             command = 'systemctl reboot';
@@ -22,7 +24,7 @@ const performAction = (action) => {
             command = 'systemctl poweroff';
             break;
         case 'lock':
-            command = 'bash -c "sleep 0.5s && swaylock & disown"';
+            command = lock + '"';
             break;
         default:
             console.log('Unknown action');

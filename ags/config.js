@@ -6,6 +6,7 @@ import AppLauncher from './applauncher/AppLauncher.js';
 import PowerMenu from './powermenu/PowerMenu.js';
 import NotificationPopups from './notification-center/NotificationPopups.js';
 import NotificationCenter from './notification-center/NotificationCenter.js';
+import Lockscreen from './lockscreen/Lockscreen.js';
 
 const scss = `${App.configDir}/style.scss`
 const css = `${App.configDir}/style.css`
@@ -20,11 +21,15 @@ export function forMonitors(widget) {
     return range(n, 0).map(widget);
 }
 
+export const lockscreens = forMonitors(Lockscreen);
+globalThis.lockscreens = lockscreens;
+
 // exporting the config so ags can manage the windows
 export default {
     style: css,
     windows: [
         forMonitors(Bar),
+        lockscreens,
         AppLauncher(),
         PowerMenu(),
         NotificationPopups(),

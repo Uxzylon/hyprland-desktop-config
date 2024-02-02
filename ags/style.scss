@@ -5,8 +5,10 @@ $theme_selected_bg_color: #a9b1d6;
 $wm_borders_edge: #e3e4e7;
 $theme_unfocused_fg_color: #c0caf5;
 $accent: #ff79c6;
+$shadow: rgba(0, 0, 0, 0.5);
 
 @import './bar/style';
 @import './powermenu/style';
 @import './applauncher/style';
 @import './notification-center/style';
+@import './lockscreen/style';
