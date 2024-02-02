@@ -1,11 +1,8 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
+// import { lockscreens } from 'resource:///com/github/Aylur/ags/lockscreens.js';
 const authpy = App.configDir + '/lockscreen/auth.py';
-
-//const lockscreenVisible = Variable(false);
-// const defaultLoginText = "Please enter your password";
-// const loginText = Variable(defaultLoginText);
 
 /** @param {number} monitor */
 export default monitor => {
