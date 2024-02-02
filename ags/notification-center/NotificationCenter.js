@@ -20,19 +20,10 @@ export default () => Widget.Window({
     focusable: true,
     visible: false,
     child: Widget.Box({
+        vertical: true,
         children: [
-            Widget.EventBox({
-                hexpand: true,
-                connections: [['button-press-event', () =>
-                    App.closeWindow('notification-center')]]
-            }),
-            Widget.Box({
-                vertical: true,
-                children: [
-                    Header(),
-                    NotificationList(),
-                ],
-            }),
+            Header(),
+            NotificationList(),
         ],
     }),
 });
