@@ -216,43 +216,39 @@ const Gammarelay = () => Widget.Box({
     ],
 });
 
-const BatteryLabel = () => {
-    return Widget.EventBox({
-        on_hover: () => popup.visible = true,
-        on_hover_lost: () => popup.visible = false,
-        setup: self => self.hook(Battery, self => {
-            const tr = Battery.time_remaining;
-            const hours = Math.floor(tr / 3600);
-            const minutes = Math.floor((tr - hours * 3600) / 60);
-            var time = `${hours}h ${minutes}m`;
-            var power = Math.round(Battery.energy_rate * 100) / 100;
+const BatteryLabel = () => Widget.EventBox({
+    setup: self => self.hook(Battery, self => {
+        const tr = Battery.time_remaining;
+        const hours = Math.floor(tr / 3600);
+        const minutes = Math.floor((tr - hours * 3600) / 60);
+        var time = `${hours}h ${minutes}m`;
+        var power = Math.round(Battery.energy_rate * 100) / 100;
 
-            if (Battery.charging) {
-                time += ' until charged';
-                power = `+${power}W`;
-            } else {
-                time += ' remaining';
-                power = `-${power}W`;
-            }
+        if (Battery.charging) {
+            time += ' until charged';
+            power = `+${power}W`;
+        } else {
+            time += ' remaining';
+            power = `-${power}W`;
+        }
 
-            self.tooltip_text = `${time}\n${power}`;
-        }, 'changed'),
-        child: Widget.Box({
-            class_name: 'battery',
-            visible: Battery.bind('available'),
-            children: [
-                Widget.Icon({
-                    icon: Battery.bind('icon-name'),
+        self.tooltip_text = `${time}\n${power}`;
+    }, 'changed'),
+    child: Widget.Box({
+        class_name: 'battery',
+        visible: Battery.bind('available'),
+        children: [
+            Widget.Icon({
+                icon: Battery.bind('icon-name'),
+            }),
+            Widget.Label({
+                label: Battery.bind('percent').transform(p => {
+                    return `${p}%`;
                 }),
-                Widget.Label({
-                    label: Battery.bind('percent').transform(p => {
-                        return `${p}%`;
-                    }),
-                }),
-            ],
-        }),
-    })
-}
+            }),
+        ],
+    }),
+});
 
 const SysTray = () => Widget.Box({
     children: SystemTray.bind('items').transform(items => {
@@ -289,7 +285,7 @@ const NotificationCenter = () => Widget.Button({
     }),
 });
 
-const cpus = Variable(0, {
+const cpus = Variable([[0],[0]], {
     poll: [5000, 'sar --dec=0 -m CPU -u ALL -P ALL 1 1', out => {
         const lines = out.split('\n');
         
@@ -336,8 +332,8 @@ const CpuMonitor = () => Widget.Box({
     ],
 });
 
-const ram = Variable(0, {
-    poll: [2000, 'free', out => out.split('\n')
+const ram = Variable([[0, 0]], {
+    poll: [5000, 'free', out => out.split('\n')
         .find(line => line.includes('Mem:'))
         .split(/\s+/)
         .splice(1, 2)],
