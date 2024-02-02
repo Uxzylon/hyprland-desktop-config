@@ -18,7 +18,7 @@ const performAction = (action) => {
             command = 'systemctl reboot';
             break;
         case 'logout':
-            command = 'hyprctl dispatch exit 0';
+            command = 'hyprctl dispatch exit';
             break;
         case 'shutdown':
             command = 'systemctl poweroff';
