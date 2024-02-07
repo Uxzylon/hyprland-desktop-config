@@ -376,16 +376,25 @@ const diskUsageMonitor = () => Widget.Box({
         }),
     ],
 });
+     
+const networkInterface = Variable('eth0', {
+    poll: [30000, 'nmcli device status', out => out.split('\n')
+        .find(line => line.includes('connecté'))
+        .split(/\s+/)[0]],
+});
 
 const networkBandwidth = Variable([0, 0], {
     poll: [5000, 'sar -n DEV 1 1', out => out.split('\n')
-        .find(line => line.includes('wlan0'))
+        .find(line => line.includes(networkInterface.value))
         .split(/\s+/)
         .splice(3, 2)
         .map(v => parseFloat(v.replace(',', '.')))],
 });
 
 const networkBandwidthMonitor = () => Widget.Box({
+    tooltip_text: networkInterface.bind().transform(v => {
+        return `${v}`;
+    }),
     children: [
         Widget.Icon({
             icon: 'network-transmit-symbolic',
