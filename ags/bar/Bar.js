@@ -353,6 +353,30 @@ const RamMonitor = () => Widget.Box({
     ],
 });
 
+const diskUsage = Variable([0, 0], {
+    poll: [30000, 'df -h /', out => out.split('\n')
+        .find(line => line.includes('/dev/'))
+        .split(/\s+/)
+        .splice(1, 3)
+        .map(v => parseFloat(v.replace('G', '')))],
+});
+
+const diskUsageMonitor = () => Widget.Box({
+    tooltip_text: diskUsage.bind().transform(v => {
+        return `${v[1]}GB / ${v[0]}GB`;
+    }),
+    children: [
+        Widget.Icon({
+            icon: 'drive-harddisk-symbolic',
+        }),
+        Widget.Label({
+            label: diskUsage.bind().transform(v => {
+                return `${v[2]}GB`;
+            }),
+        }),
+    ],
+});
+
 const networkBandwidth = Variable([0, 0], {
     poll: [5000, 'sar -n DEV 1 1', out => out.split('\n')
         .find(line => line.includes('wlan0'))
@@ -366,7 +390,6 @@ const networkBandwidthMonitor = () => Widget.Box({
         Widget.Icon({
             icon: 'network-transmit-symbolic',
         }),
-        // display in mbps
         Widget.Label({
             label: networkBandwidth.bind().transform(v => {
                 return `${(v[0] / 1024 * 8).toFixed(2)}MB/s`;
@@ -428,6 +451,7 @@ const Right = () => Widget.Box({
         NotificationCenter(),
         UpdatesMonitor(),
         networkBandwidthMonitor(),
+        diskUsageMonitor(),
         RamMonitor(),
         CpuMonitor(),
         Gammarelay(),
