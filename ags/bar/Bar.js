@@ -353,6 +353,36 @@ const RamMonitor = () => Widget.Box({
     ],
 });
 
+const networkBandwidth = Variable([0, 0], {
+    poll: [5000, 'sar -n DEV 1 1', out => out.split('\n')
+        .find(line => line.includes('wlan0'))
+        .split(/\s+/)
+        .splice(3, 2)
+        .map(v => parseFloat(v.replace(',', '.')))],
+});
+
+const networkBandwidthMonitor = () => Widget.Box({
+    children: [
+        Widget.Icon({
+            icon: 'network-transmit-symbolic',
+        }),
+        // display in mbps
+        Widget.Label({
+            label: networkBandwidth.bind().transform(v => {
+                return `${(v[0] / 1024 * 8).toFixed(2)}MB/s`;
+            }),
+        }),
+        Widget.Icon({
+            icon: 'network-receive-symbolic',
+        }),
+        Widget.Label({
+            label: networkBandwidth.bind().transform(v => {
+                return `${(v[1] / 1024 * 8).toFixed(2)}MB/s`;
+            }),
+        }),
+    ],
+});
+
 const updates = Variable(0, {
     poll: [30000, 'bash -c "checkupdates | wc -l"', out => out],
 });
@@ -397,6 +427,7 @@ const Right = () => Widget.Box({
         SysTray(),
         NotificationCenter(),
         UpdatesMonitor(),
+        networkBandwidthMonitor(),
         RamMonitor(),
         CpuMonitor(),
         Gammarelay(),
