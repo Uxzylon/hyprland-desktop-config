@@ -378,8 +378,8 @@ const diskUsageMonitor = () => Widget.Box({
 });
      
 const networkInterface = Variable('eth0', {
-    poll: [30000, 'nmcli device status', out => out.split('\n')
-        .find(line => line.includes('connecté'))
+    poll: [30000, ['bash', '-c', 'LANG=en_US.UTF-8 && nmcli device status'], out => out.split('\n')
+        .find(line => line.includes('connected'))
         .split(/\s+/)[0]],
 });
 
