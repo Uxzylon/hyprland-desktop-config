@@ -96,7 +96,13 @@ const Volume = (type = 'speaker') => Widget.EventBox({
         Audio[type].volume = Math.max(Audio[type].volume - 0.05, 0);
     },
     on_primary_click: () => {
-        Audio[type].is_muted = !Audio[type].is_muted;
+        const paramEnable = type === 'speaker' ? '' : ' --default-source u';
+        const paramDisable = type === 'speaker' ? '' : ' --default-source ';
+        if (Audio[type].stream.is_muted) {
+            execAsync('pamixer -u' + paramEnable)
+        } else {
+            execAsync('pamixer' + paramDisable + '-m')
+        }
     },
     on_secondary_click: () => {
         execAsync('pavucontrol')
@@ -116,7 +122,7 @@ const Volume = (type = 'speaker') => Widget.EventBox({
                     0: 'muted',
                 };
 
-                const icon = Audio[type].is_muted ? 0 : [101, 67, 34, 1, 0].find(
+                const icon = Audio[type].stream.is_muted ? 0 : [101, 67, 34, 1, 0].find(
                     threshold => threshold <= Audio[type].volume * 100);
 
                 const prefix = type === 'speaker' ? 'audio-volume' : 'microphone-sensitivity';
@@ -124,7 +130,7 @@ const Volume = (type = 'speaker') => Widget.EventBox({
 
             }, `${type}-changed`),
             Widget.Label().hook(Audio, self => {
-                if (Audio[type]?.is_muted) {
+                if (Audio[type]?.stream.is_muted) {
                     self.label = '';
                 } else {
                     self.label = `${Math.round((Audio[type]?.volume || 0) * 100)}%`;
