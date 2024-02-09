@@ -96,8 +96,8 @@ const Volume = (type = 'speaker') => Widget.EventBox({
         Audio[type].volume = Math.max(Audio[type].volume - 0.05, 0);
     },
     on_primary_click: () => {
-        const paramEnable = type === 'speaker' ? '' : ' --default-source u';
-        const paramDisable = type === 'speaker' ? '' : ' --default-source ';
+        const paramEnable = type === 'speaker' ? ' ' : ' --default-source u';
+        const paramDisable = type === 'speaker' ? ' ' : ' --default-source ';
         if (Audio[type].stream.is_muted) {
             execAsync('pamixer -u' + paramEnable)
         } else {
