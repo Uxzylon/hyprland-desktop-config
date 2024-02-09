@@ -12,6 +12,7 @@ import GammarelayBrightnessService from '../services/GammarelayBrightness.js';
 import GammarelayTemperatureService from '../services/GammarelayTemperature.js';
 import Brightness from '../services/Brightness.js';
 import { NotificationExceptions } from '../notification-center/Notification.js';
+import Taskbar from './modules/taskbar.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
@@ -441,11 +442,12 @@ const UpdatesMonitor = () => Widget.Button({
 });
 
 // layout of the bar
-const Left = () => Widget.Box({
+const Left = monitor => Widget.Box({
     spacing: 8,
     children: [
         AppLauncherButton(),
         Workspaces(),
+        Taskbar(monitor),
         ClientTitle(),
     ],
 });
@@ -486,7 +488,7 @@ export default monitor => Widget.Window({
     anchor: ['top', 'left', 'right'],
     exclusivity: 'exclusive',
     child: Widget.CenterBox({
-        start_widget: Left(),
+        start_widget: Left(monitor),
         center_widget: Center(),
         end_widget: Right(),
     }),
