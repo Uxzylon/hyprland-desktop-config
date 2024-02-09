@@ -30,7 +30,7 @@ label {
     font-weight: bold;
 }
 
-.workspaces button.focused {
+button.focused {
     border-bottom: 3px solid $theme_selected_bg_color;
 }
 
@@ -45,4 +45,10 @@ label {
 progress,
 highlight {
     min-height: 8px;
+}
+
+.separator {
+    background-color: $theme_selected_bg_color;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }

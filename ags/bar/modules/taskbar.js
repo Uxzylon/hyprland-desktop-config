@@ -15,6 +15,7 @@ const AppButton = (icon, text, client, monitor) => {
             ],
         }),
         on_primary_click: () => Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`),
+        class_name: Hyprland.active.client.bind('address').transform(addr => `${addr === client.address ? 'focused' : ''}`),
     })
 };
 

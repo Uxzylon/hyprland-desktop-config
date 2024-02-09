@@ -27,6 +27,10 @@ const AppLauncherButton = () => Widget.Button({
     }),
 });
 
+const Separator = () => Widget.Box({
+    class_name: 'separator',
+});
+
 const Workspaces = () => Widget.Box({
     class_name: 'workspaces',
     children: Hyprland.bind('workspaces').transform(ws => {
@@ -443,10 +447,11 @@ const UpdatesMonitor = () => Widget.Button({
 
 // layout of the bar
 const Left = monitor => Widget.Box({
-    spacing: 8,
+    spacing: 4,
     children: [
         AppLauncherButton(),
         Workspaces(),
+        Separator(),
         Taskbar(monitor),
         ClientTitle(),
     ],
