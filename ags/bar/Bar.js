@@ -450,7 +450,7 @@ const UpdatesMonitor = () => Widget.Button({
 const ToolsButton = () => Widget.Button({
     on_clicked: () => App.toggleWindow('tools'),
     child: Widget.Icon({
-        icon: 'applications-utilities-symbolic',
+        icon: 'system-run-symbolic',
     }),
 });
 

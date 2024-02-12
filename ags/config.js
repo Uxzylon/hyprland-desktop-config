@@ -7,6 +7,8 @@ import PowerMenu from './powermenu/PowerMenu.js';
 import NotificationPopups from './notification-center/NotificationPopups.js';
 import NotificationCenter from './notification-center/NotificationCenter.js';
 import Lockscreen from './lockscreen/Lockscreen.js';
+import Tools from './tools/tools.js';
+import Clipboard from './tools/clipboard.js';
 
 const scss = `${App.configDir}/style.scss`
 const css = `${App.configDir}/style.css`
@@ -34,5 +36,7 @@ export default {
         PowerMenu(),
         NotificationPopups(),
         NotificationCenter(),
+        Tools(),
+        Clipboard(),
     ],
 };
