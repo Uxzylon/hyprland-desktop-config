@@ -13,6 +13,8 @@ import GammarelayTemperatureService from '../services/GammarelayTemperature.js';
 import Brightness from '../services/Brightness.js';
 import { NotificationExceptions } from '../notification-center/Notification.js';
 import Taskbar from './modules/taskbar.js';
+import SubMenu from './SubMenu.js';
+import Colorpicker from '../tools/colorpicker.js';
 
 // widgets can be only assigned as a child in one container
 // so to make a reuseable widget, make it a function
@@ -445,6 +447,13 @@ const UpdatesMonitor = () => Widget.Button({
     }),
 });
 
+const ToolsButton = () => Widget.Button({
+    on_clicked: () => App.toggleWindow('tools'),
+    child: Widget.Icon({
+        icon: 'applications-utilities-symbolic',
+    }),
+});
+
 // layout of the bar
 const Left = monitor => Widget.Box({
     spacing: 4,
@@ -469,8 +478,14 @@ const Right = () => Widget.Box({
     hpack: 'end',
     spacing: 8,
     children: [
-        SysTray(),
+        SubMenu({
+            children: [
+                Colorpicker(),
+                SysTray(),
+            ],
+        }),
         NotificationCenter(),
+        ToolsButton(),
         UpdatesMonitor(),
         networkBandwidthMonitor(),
         diskUsageMonitor(),
