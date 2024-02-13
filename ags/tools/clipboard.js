@@ -4,10 +4,10 @@ import Clipboard from '../services/Clipboard.js';
 
 const WINDOW_NAME = 'clipboard';
 
-const Entry = (name, id) => Widget.Button({
+const Entry = (name) => Widget.Button({
     on_clicked: () => {
         App.closeWindow(WINDOW_NAME);
-        Clipboard.select(id);
+        Clipboard.select(name);
     },
     child: Widget.Box({
         children: [
@@ -23,7 +23,7 @@ const Entry = (name, id) => Widget.Button({
 });
 
 const History = (width = 500, height = 500, spacing = 12) => {
-    let entries = Clipboard.bind('clipboard').transform(history => history.map((entry, id) => Entry(entry, id)));
+    let entries = Clipboard.bind('clipboard').transform(history => history.map(entry => Entry(entry)));
 
     // container holding the buttons
     const list = Widget.Box({
