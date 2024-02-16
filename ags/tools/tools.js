@@ -28,6 +28,7 @@ const Tool = (name, icon, action) => Widget.Button({
 const Tools = (width = 500, height = 500, spacing = 12) => {
     let tools = [
         Tool('Clipboard', 'edit-paste', () => App.toggleWindow('clipboard')),
+        Tool('Emojis', 'face-smile', () => App.toggleWindow('emojis')),
     ];
 
     // container holding the buttons

@@ -36,11 +36,15 @@ class Clipboard extends Service {
             .catch(err => console.error(err));
     }
 
-    /** @param {string} history */
-    wlCopy(history) {
-        //Utils.notify('clipboard', history);
-        this.#cancel = true;
-        Utils.execAsync(['wl-copy', history])
+    /** @param {string} text */
+    /** @param {boolean} record */
+    wlCopy(text, record = false) {
+        //Utils.notify('clipboard', text);
+
+        if (!record)
+            this.#cancel = true;
+
+        Utils.execAsync(['wl-copy', text])
             .catch(err => console.error(err));
     }
 

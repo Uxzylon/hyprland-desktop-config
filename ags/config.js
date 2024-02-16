@@ -9,6 +9,7 @@ import NotificationCenter from './notification-center/NotificationCenter.js';
 import Lockscreen from './lockscreen/Lockscreen.js';
 import Tools from './tools/tools.js';
 import Clipboard from './tools/clipboard.js';
+import Emojis from './tools/emojis/emojis.js';
 
 const scss = `${App.configDir}/style.scss`
 const css = `${App.configDir}/style.css`
@@ -38,5 +39,6 @@ export default {
         NotificationCenter(),
         Tools(),
         Clipboard(),
+        Emojis(),
     ],
 };
