@@ -34,8 +34,9 @@ class Colors extends Service {
             .catch(err => console.error(err));
     }
 
-    async pick() {
-        const color = await Utils.execAsync('hyprpicker');
+    /** @param {'cmyk' | 'hex' | 'rgb' | 'hsl' | 'hsv'} format */
+    async pick(format = 'hex') {
+        const color = await Utils.execAsync('hyprpicker -n -f ' + format);
         if (!color)
             return;
 
