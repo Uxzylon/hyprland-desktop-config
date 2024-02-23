@@ -13,6 +13,7 @@ import GammarelayTemperatureService from '../services/GammarelayTemperature.js';
 import Brightness from '../services/Brightness.js';
 import { NotificationExceptions } from '../notification-center/Notification.js';
 import Taskbar from './modules/taskbar.js';
+import Workspaces from './modules/workspaces.js';
 import SubMenu from './SubMenu.js';
 import Colorpicker from '../tools/colorpicker.js';
 
@@ -33,21 +34,15 @@ const Separator = () => Widget.Box({
     class_name: 'separator',
 });
 
-const Workspaces = () => Widget.Box({
-    class_name: 'workspaces',
-    children: Hyprland.bind('workspaces').transform(ws => {
-        return ws.sort((a, b) => a.id - b.id).map(({ id }) => Widget.Button({
-            on_clicked: () => Hyprland.sendMessage(`dispatch workspace ${id}`),
-            child: Widget.Label(`${id}`),
-            class_name: Hyprland.active.workspace.bind('id')
-                .transform(i => `${i === id ? 'focused' : ''}`),
-        }));
-    }),
-});
-
 const ClientTitle = () => Widget.Label({
     class_name: 'client-title',
-    label: Hyprland.active.client.bind('title'),
+    label: Hyprland.active.client.bind('title').transform(title => {
+        if (title.length > 70) {
+            return title.substring(0, 70) + '...';
+        } else {
+            return title;
+        }
+    }),
 });
 
 const PowerButton = () => Widget.Button({
@@ -459,7 +454,7 @@ const Left = monitor => Widget.Box({
     spacing: 4,
     children: [
         AppLauncherButton(),
-        Workspaces(),
+        Workspaces(monitor),
         Separator(),
         Taskbar(monitor),
         ClientTitle(),
