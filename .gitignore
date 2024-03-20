@@ -4,6 +4,8 @@
 !hypr
 !hypr/**
 hypr/monitors.conf
+hypr/floating.conf
+hypr/dock_mode.sh
 hypr/env.conf
 !waybar
 !waybar/**
