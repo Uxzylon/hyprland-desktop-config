@@ -23,7 +23,6 @@ wget https://github.com/ljmill/tokyo-night-icons/releases/download/v0.2.0/TokyoN
 mkdir -p ~/.icons
 tar -xvf TokyoNight-SE.tar.bz2 -C ~/.icons/
 rm -rf TokyoNight-SE.tar.bz2
->>>>>>> aeeaf8d6b41c3a6f338d84bc18d5be781dace7b3
 ```
 
 #### SDDM Theme
