@@ -23,6 +23,10 @@ wget https://github.com/ljmill/tokyo-night-icons/releases/download/v0.2.0/TokyoN
 mkdir -p ~/.icons
 tar -xvf TokyoNight-SE.tar.bz2 -C ~/.icons/
 rm -rf TokyoNight-SE.tar.bz2
+sed -i 's/gtk-theme-name=.*/gtk-theme-name=Tokyonight-Dark-B/g' ~/.config/gtk-3.0/settings.ini
+sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name=TokyoNight-SE/g' ~/.config/gtk-3.0/settings.ini
+gsettings set org.gnome.desktop.interface gtk-theme 'Tokyonight-Dark-B'
+gsettings set org.gnome.desktop.interface icon-theme 'TokyoNight-SE'
 ```
 
 #### SDDM Theme
