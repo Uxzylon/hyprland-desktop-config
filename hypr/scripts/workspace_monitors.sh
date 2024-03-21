@@ -2,6 +2,12 @@
 
 number=$1
 
+monitors=$(hyprctl monitors -j | jq '. | length')
+if [[ $monitors -eq 1 ]]; then
+  echo $number
+  exit 0
+fi
+
 json=$(hyprctl activeworkspace -j)
 id=$(echo "$json" | jq -r '.id')
 
