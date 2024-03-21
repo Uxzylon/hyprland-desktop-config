@@ -10,6 +10,7 @@ import Lockscreen from './lockscreen/Lockscreen.js';
 import Tools from './tools/tools.js';
 import Clipboard from './tools/clipboard.js';
 import Emojis from './tools/emojis/emojis.js';
+import PopupBackground from './PopupBackground.js';
 
 const scss = `${App.configDir}/style.scss`
 const css = `${App.configDir}/style.css`
@@ -27,6 +28,11 @@ export function forMonitors(widget) {
 export const lockscreens = forMonitors(Lockscreen);
 globalThis.lockscreens = lockscreens;
 
+export const popups = [
+    'applauncher',
+];
+globalThis.popups = popups;
+
 // exporting the config so ags can manage the windows
 export default {
     style: css,
@@ -40,5 +46,6 @@ export default {
         Tools(),
         Clipboard(),
         Emojis(),
+        PopupBackground(),
     ],
 };

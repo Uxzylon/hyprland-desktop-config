@@ -90,9 +90,12 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
 
             // when the applauncher shows up
             if (visible) {
+                App.openWindow('popup-background');
                 repopulate();
                 entry.text = '';
                 entry.grab_focus();
+            } else {
+                App.closeWindow('popup-background');
             }
         }),
     });
@@ -102,8 +105,8 @@ export default () => Widget.Window({
     name: WINDOW_NAME,
     popup: true,
     visible: false,
-    focusable: true,
     keymode: 'exclusive',
+    layer: 'overlay',
     anchor: ['top', 'left'],
     child: Applauncher({
         width: 500,
