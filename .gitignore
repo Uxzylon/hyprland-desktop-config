@@ -7,6 +7,8 @@ hypr/monitors.conf
 hypr/floating.conf
 hypr/dock_mode.sh
 hypr/env.conf
+!xdg-desktop-portal
+!xdg-desktop-portal/**
 !waybar
 !waybar/**
 !dunst
